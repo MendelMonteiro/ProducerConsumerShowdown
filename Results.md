@@ -21,11 +21,6 @@
 ## MPSC on disruptor
 |                  Method |      Mean |     Error |    StdDev | Gen 0 | Gen 1 | Gen 2 | Allocated |
 |------------------------ |----------:|----------:|----------:|------:|------:|------:|----------:|
-| BlockingCollectionQueue | 24.743 ms | 0.4821 ms | 0.6599 ms |     - |     - |     - |      64 B |
-|  NoDedicatedThreadQueue |  6.945 ms | 0.0859 ms | 0.0803 ms |     - |     - |     - |     371 B |
-|                 RxQueue | 13.233 ms | 0.2584 ms | 0.3173 ms |     - |     - |     - |      64 B |
-|           ChannelsQueue |  5.175 ms | 0.0695 ms | 0.0616 ms |     - |     - |     - |     909 B |
-|        TPLDataflowQueue |  5.796 ms | 0.1088 ms | 0.1017 ms |     - |     - |     - |   17222 B |
 |          DisruptorQueue |  6.022 ms | 0.1192 ms | 0.1784 ms |     - |     - |     - |      64 B |
 
 ## SPSC blocking disruptor

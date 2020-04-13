@@ -8,7 +8,9 @@ namespace ProducerConsumerShowdown
     public class ManyJobsBenchmark
     {
         private readonly AutoResetEvent _autoResetEvent;
+
         private DisruptorQueue _disruptorQueue;
+        private DisruptorQueue2 _disruptorQueue2;
         private BlockingCollectionQueue _blockingCollectionQueue;
         private NoDedicatedThreadQueue _noThreadQueue;
         private RxQueue _rxQueue;
@@ -50,7 +52,12 @@ namespace ProducerConsumerShowdown
         public void DisruptorSetup() => _disruptorQueue = new DisruptorQueue();
 
         [GlobalCleanup(Target = nameof(DisruptorQueue))]
-        public void DisruptorCleanup() => Console.WriteLine("Stopping up disruptor");
+        public void DisruptorCleanup() => _disruptorQueue.Stop();
+        [GlobalSetup(Target = nameof(DisruptorQueue2))]
+        public void DisruptorSetup2() => _disruptorQueue2 = new DisruptorQueue2();
+
+        [GlobalCleanup(Target = nameof(DisruptorQueue2))]
+        public void DisruptorCleanup2() => _disruptorQueue2.Stop();
 
 
         [Benchmark]
@@ -64,18 +71,26 @@ namespace ProducerConsumerShowdown
         [Benchmark]
         public void TPLDataflowQueue() => DoManyJobs(_dataFlowQueue);
         [Benchmark]
-        public void DisruptorQueue()
+        public void DisruptorQueue() => DoManyJobs(_disruptorQueue);
+        [Benchmark]
+        public void DisruptorQueue2()
         {
-            DoManyJobs(_disruptorQueue);
+            int jobs = 100_000; 
+            var jobQueue = _disruptorQueue2;
+            for (int i = 0; i < jobs - 1; i++)
+            {
+                jobQueue.Enqueue(null);
+            }
+            jobQueue.Enqueue(_autoResetEvent);
+            _autoResetEvent.WaitOne();
         }
 
         private void DoManyJobs(IJobQueue<Action> jobQueue)
         {
-            Action p = () => { };
             int jobs = 100_000;
             for (int i = 0; i < jobs - 1; i++)
             {
-                jobQueue.Enqueue(p);
+                jobQueue.Enqueue(() => { });
             }
             jobQueue.Enqueue(() => _autoResetEvent.Set());
             _autoResetEvent.WaitOne();

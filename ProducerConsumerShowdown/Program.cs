@@ -1,5 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
-using Microsoft.Diagnostics.Runtime.Interop;
 using System;
 
 namespace ProducerConsumerShowdown
