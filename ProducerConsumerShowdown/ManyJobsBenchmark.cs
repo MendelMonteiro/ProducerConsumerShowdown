@@ -46,6 +46,12 @@ namespace ProducerConsumerShowdown
 
         [GlobalCleanup(Target = nameof(TPLDataflowQueue))]
         public void CleanupDataFlow() => _dataFlowQueue.Stop();
+        [GlobalSetup(Target = nameof(DisruptorQueue))]
+        public void DisruptorSetup() => _disruptorQueue = new DisruptorQueue();
+
+        [GlobalCleanup(Target = nameof(DisruptorQueue))]
+        public void DisruptorCleanup() => Console.WriteLine("Stopping up disruptor");
+
 
         [Benchmark]
         public void BlockingCollectionQueue() => DoManyJobs(_blockingCollectionQueue);
@@ -57,23 +63,11 @@ namespace ProducerConsumerShowdown
         public void ChannelsQueue() => DoManyJobs(_channelsQueue);
         [Benchmark]
         public void TPLDataflowQueue() => DoManyJobs(_dataFlowQueue);
-
-        [GlobalSetup(Target = nameof(DisruptorQueue))]
-        public void DisruptorSetup()
-        {
-            _disruptorQueue = new DisruptorQueue();
-            Console.WriteLine("Setting up disruptor");
-        }
-
-        [GlobalCleanup(Target = nameof(DisruptorQueue))]
-        public void DisruptorCleanup()
-        {
-            Console.WriteLine("Stopping up disruptor");
-            _disruptorQueue?.Stop();
-        }
-
         [Benchmark]
-        public void DisruptorQueue() => DoManyJobs(_disruptorQueue);
+        public void DisruptorQueue()
+        {
+            DoManyJobs(_disruptorQueue);
+        }
 
         private void DoManyJobs(IJobQueue<Action> jobQueue)
         {

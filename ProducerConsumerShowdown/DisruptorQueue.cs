@@ -2,6 +2,7 @@
 using Disruptor.Dsl;
 using System;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace ProducerConsumerShowdown
@@ -12,7 +13,7 @@ namespace ProducerConsumerShowdown
 
         public DisruptorQueue()
         {
-            _disruptor = new Disruptor<Entry>(() => new Entry(), 256, TaskScheduler.Default, ProducerType.Multi, new BusySpinWaitStrategy());
+            _disruptor = new Disruptor<Entry>(() => new Entry(), 1024, TaskScheduler.Default, ProducerType.Single, new BusySpinWaitStrategy());
             _disruptor.HandleEventsWith(new EntryHandler());
             _disruptor.Start();
         }
