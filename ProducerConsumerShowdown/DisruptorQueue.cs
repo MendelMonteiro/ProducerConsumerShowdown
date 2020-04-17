@@ -1,6 +1,7 @@
 ﻿using Disruptor;
 using Disruptor.Dsl;
 using System;
+using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +41,7 @@ namespace ProducerConsumerShowdown
         }
     }
 
-    class DisruptorQueue2 
+    class DisruptorQueue2
     {
         private readonly Disruptor<Event> _disruptor;
 
@@ -59,6 +60,20 @@ namespace ProducerConsumerShowdown
             entry.AutoResetEvent = @event;
 
             _disruptor.RingBuffer.Publish(seq);
+        }
+
+        public void EnqueueBatch(AutoResetEvent @event, int count)
+        {
+            var hi = _disruptor.RingBuffer.Next(count);
+            var lo = hi - (count - 1);
+
+            for (long seq = lo; seq < hi; seq++)
+            {
+                var entry = _disruptor.RingBuffer[seq];
+                entry.AutoResetEvent = @event; 
+            }
+
+            _disruptor.RingBuffer.Publish(lo, hi);
         }
 
         public void Stop() => _disruptor.Shutdown();

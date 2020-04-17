@@ -32,3 +32,15 @@
 |         Method |     Mean |    Error |   StdDev | Gen 0 | Gen 1 | Gen 2 | Allocated |
 |--------------- |---------:|---------:|---------:|------:|------:|------:|----------:|
 | DisruptorQueue | 14.70 ms | 0.177 ms | 0.166 ms |     - |     - |     - |      64 B |
+
+## Job size = 1M, Disruptor batch size = 10 
+|                  Method |       Mean |     Error |    StdDev | Gen 0 | Gen 1 | Gen 2 | Allocated |
+|------------------------ |-----------:|----------:|----------:|------:|------:|------:|----------:|
+| BlockingCollectionQueue | 243.979 ms | 4.6870 ms | 5.2095 ms |     - |     - |     - |      64 B |
+|  NoDedicatedThreadQueue |  72.050 ms | 1.4265 ms | 3.0090 ms |     - |     - |     - |     283 B |
+|                 RxQueue | 124.467 ms | 1.9153 ms | 1.7916 ms |     - |     - |     - |      64 B |
+|           ChannelsQueue |  53.814 ms | 1.0610 ms | 1.7134 ms |     - |     - |     - |    6685 B |
+|        TPLDataflowQueue |  55.875 ms | 0.7748 ms | 0.6868 ms |     - |     - |     - |  146428 B |
+|          DisruptorQueue |  45.520 ms | 0.4722 ms | 0.3943 ms |     - |     - |     - |      64 B |
+|         DisruptorQueue2 |  43.143 ms | 0.8513 ms | 2.0882 ms |     - |     - |     - |         - |
+|  DisruptorQueue2Batched |   8.574 ms | 0.1226 ms | 0.1024 ms |     - |     - |     - |         - |

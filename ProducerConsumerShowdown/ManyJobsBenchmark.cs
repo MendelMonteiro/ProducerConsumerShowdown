@@ -7,6 +7,7 @@ namespace ProducerConsumerShowdown
     [MemoryDiagnoser]
     public class ManyJobsBenchmark
     {
+        private const int _jobSize = 1_000_000;
         private readonly AutoResetEvent _autoResetEvent;
 
         private DisruptorQueue _disruptorQueue;
@@ -59,6 +60,12 @@ namespace ProducerConsumerShowdown
         [GlobalCleanup(Target = nameof(DisruptorQueue2))]
         public void DisruptorCleanup2() => _disruptorQueue2.Stop();
 
+        [GlobalSetup(Target = nameof(DisruptorQueue2Batched))]
+        public void DisruptorSetup2Batched() => _disruptorQueue2 = new DisruptorQueue2();
+
+        [GlobalCleanup(Target = nameof(DisruptorQueue2Batched))]
+        public void DisruptorCleanup2Batched() => _disruptorQueue2.Stop();
+
 
         [Benchmark]
         public void BlockingCollectionQueue() => DoManyJobs(_blockingCollectionQueue);
@@ -75,9 +82,8 @@ namespace ProducerConsumerShowdown
         [Benchmark]
         public void DisruptorQueue2()
         {
-            int jobs = 100_000; 
             var jobQueue = _disruptorQueue2;
-            for (int i = 0; i < jobs - 1; i++)
+            for (int i = 0; i < _jobSize - 1; i++)
             {
                 jobQueue.Enqueue(null);
             }
@@ -85,10 +91,22 @@ namespace ProducerConsumerShowdown
             _autoResetEvent.WaitOne();
         }
 
+        [Benchmark]
+        public void DisruptorQueue2Batched()
+        {
+            var jobQueue = _disruptorQueue2;
+            var batchSize = 10;
+            for (int i = 0; i < (_jobSize / batchSize) - 1; i++)
+            {
+                jobQueue.EnqueueBatch(null, batchSize);
+            }
+            jobQueue.Enqueue(_autoResetEvent);
+            _autoResetEvent.WaitOne();
+        }
+
         private void DoManyJobs(IJobQueue<Action> jobQueue)
         {
-            int jobs = 100_000;
-            for (int i = 0; i < jobs - 1; i++)
+            for (int i = 0; i < _jobSize - 1; i++)
             {
                 jobQueue.Enqueue(() => { });
             }
