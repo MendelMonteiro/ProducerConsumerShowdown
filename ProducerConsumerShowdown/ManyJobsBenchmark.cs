@@ -11,7 +11,7 @@ namespace ProducerConsumerShowdown
         private readonly AutoResetEvent _autoResetEvent;
 
         private DisruptorQueue _disruptorQueue;
-        private DisruptorQueue2 _disruptorQueue2;
+        private DisruptorQueueNoDelegate _disruptorQueueNoDelegate;
         private BlockingCollectionQueue _blockingCollectionQueue;
         private NoDedicatedThreadQueue _noThreadQueue;
         private RxQueue _rxQueue;
@@ -54,35 +54,41 @@ namespace ProducerConsumerShowdown
 
         [GlobalCleanup(Target = nameof(DisruptorQueue))]
         public void DisruptorCleanup() => _disruptorQueue.Stop();
-        [GlobalSetup(Target = nameof(DisruptorQueue2))]
-        public void DisruptorSetup2() => _disruptorQueue2 = new DisruptorQueue2();
+        [GlobalSetup(Target = nameof(DisruptorQueueNoDelegate))]
+        public void DisruptorSetupNoDelegate() => _disruptorQueueNoDelegate = new DisruptorQueueNoDelegate();
 
-        [GlobalCleanup(Target = nameof(DisruptorQueue2))]
-        public void DisruptorCleanup2() => _disruptorQueue2.Stop();
+        [GlobalCleanup(Target = nameof(DisruptorQueueNoDelegate))]
+        public void DisruptorCleanupNoDelegate() => _disruptorQueueNoDelegate.Stop();
 
-        [GlobalSetup(Target = nameof(DisruptorQueue2Batched))]
-        public void DisruptorSetup2Batched() => _disruptorQueue2 = new DisruptorQueue2();
+        [GlobalSetup(Target = nameof(DisruptorQueueNoDelegateBatched))]
+        public void DisruptorSetupNoDelegateBatched() => _disruptorQueueNoDelegate = new DisruptorQueueNoDelegate();
 
-        [GlobalCleanup(Target = nameof(DisruptorQueue2Batched))]
-        public void DisruptorCleanup2Batched() => _disruptorQueue2.Stop();
+        [GlobalCleanup(Target = nameof(DisruptorQueueNoDelegateBatched))]
+        public void DisruptorCleanupNoDelegateBatched() => _disruptorQueueNoDelegate.Stop();
 
 
         [Benchmark]
         public void BlockingCollectionQueue() => DoManyJobs(_blockingCollectionQueue);
+
         [Benchmark]
         public void NoDedicatedThreadQueue() => DoManyJobs(_noThreadQueue);
+        
         [Benchmark]
         public void RxQueue() => DoManyJobs(_rxQueue);
+
         [Benchmark]
         public void ChannelsQueue() => DoManyJobs(_channelsQueue);
+
         [Benchmark]
         public void TPLDataflowQueue() => DoManyJobs(_dataFlowQueue);
+
         [Benchmark]
         public void DisruptorQueue() => DoManyJobs(_disruptorQueue);
-        [Benchmark]
-        public void DisruptorQueue2()
+
+        [Benchmark] 
+        public void DisruptorQueueNoDelegate()
         {
-            var jobQueue = _disruptorQueue2;
+            var jobQueue = _disruptorQueueNoDelegate;
             for (int i = 0; i < _jobSize - 1; i++)
             {
                 jobQueue.Enqueue(null);
@@ -92,9 +98,9 @@ namespace ProducerConsumerShowdown
         }
 
         [Benchmark]
-        public void DisruptorQueue2Batched()
+        public void DisruptorQueueNoDelegateBatched()
         {
-            var jobQueue = _disruptorQueue2;
+            var jobQueue = _disruptorQueueNoDelegate;
             var batchSize = 10;
             for (int i = 0; i < (_jobSize / batchSize) - 1; i++)
             {

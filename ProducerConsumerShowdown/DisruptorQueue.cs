@@ -41,11 +41,11 @@ namespace ProducerConsumerShowdown
         }
     }
 
-    class DisruptorQueue2
+    class DisruptorQueueNoDelegate
     {
         private readonly Disruptor<Event> _disruptor;
 
-        public DisruptorQueue2()
+        public DisruptorQueueNoDelegate()
         {
             _disruptor = new Disruptor<Event>(() => new Event(), 256, TaskScheduler.Default, ProducerType.Single, new BusySpinWaitStrategy());
             _disruptor.HandleEventsWith(new EntryHandler());
