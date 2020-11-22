@@ -48,11 +48,11 @@
 ## Job size = 1M, Disruptor batch size = 10, No method calls in test
 |                          Method |       Mean |     Error |     StdDev | Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------------------------- |-----------:|----------:|-----------:|------:|------:|------:|----------:|
-|         BlockingCollectionQueue | 261.535 ms | 5.9974 ms | 17.6836 ms |     - |     - |     - |      64 B |
-|          NoDedicatedThreadQueue |  70.767 ms | 1.1073 ms |  0.9246 ms |     - |     - |     - |     269 B |
-|                         RxQueue | 132.344 ms | 2.4868 ms |  2.3262 ms |     - |     - |     - |     380 B |
-|                   ChannelsQueue |  53.065 ms | 1.0590 ms |  1.7399 ms |     - |     - |     - |    3590 B |
-|                TPLDataflowQueue |  57.314 ms | 1.1087 ms |  1.6932 ms |     - |     - |     - |  214032 B |
-|                  DisruptorQueue |  33.467 ms | 1.9658 ms |  5.7963 ms |     - |     - |     - |      64 B |
-|        DisruptorQueueNoDelegate |  30.194 ms | 1.3844 ms |  4.0819 ms |     - |     - |     - |         - |
-| DisruptorQueueNoDelegateBatched |   7.261 ms | 0.1412 ms |  0.2070 ms |     - |     - |     - |         - |
+|         BlockingCollectionQueue | 271.652 ms | 5.5008 ms | 16.2191 ms |     - |     - |     - |      64 B |
+|          NoDedicatedThreadQueue |  73.527 ms | 1.3218 ms |  1.2364 ms |     - |     - |     - |    1434 B |
+|                         RxQueue | 129.476 ms | 1.7124 ms |  1.6017 ms |     - |     - |     - |      64 B |
+|                   ChannelsQueue |  49.805 ms | 0.9511 ms |  1.0571 ms |     - |     - |     - |   13562 B |
+|                TPLDataflowQueue |  58.114 ms | 1.0274 ms |  0.9610 ms |     - |     - |     - |  286485 B |
+|                  DisruptorQueue |  15.153 ms | 0.7866 ms |  2.3070 ms |     - |     - |     - |      64 B |
+|        DisruptorQueueNoDelegate |  18.725 ms | 0.6071 ms |  1.7515 ms |     - |     - |     - |         - |
+| DisruptorQueueNoDelegateBatched |   6.096 ms | 0.0733 ms |  0.0572 ms |     - |     - |     - |         - |
