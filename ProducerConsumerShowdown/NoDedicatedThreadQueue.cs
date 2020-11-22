@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace ProducerConsumerShowdown
@@ -9,6 +10,7 @@ namespace ProducerConsumerShowdown
         private readonly Queue<Action> _jobs = new Queue<Action>();
         private bool _delegateQueuedOrRunning = false;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Enqueue(Action job)
         {
             lock (_jobs)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace ProducerConsumerShowdown
@@ -15,6 +16,7 @@ namespace ProducerConsumerShowdown
             thread.Start();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Enqueue(Action job) => _jobs.Add(job);
 
         private void OnStart()

@@ -72,7 +72,7 @@ namespace ProducerConsumerShowdown
 
         [Benchmark]
         public void NoDedicatedThreadQueue() => DoManyJobs(_noThreadQueue);
-        
+
         [Benchmark]
         public void RxQueue() => DoManyJobs(_rxQueue);
 
@@ -85,7 +85,7 @@ namespace ProducerConsumerShowdown
         [Benchmark]
         public void DisruptorQueue() => DoManyJobs(_disruptorQueue);
 
-        [Benchmark] 
+        [Benchmark]
         public void DisruptorQueueNoDelegate()
         {
             var jobQueue = _disruptorQueueNoDelegate;
@@ -110,11 +110,67 @@ namespace ProducerConsumerShowdown
             _autoResetEvent.WaitOne();
         }
 
-        private void DoManyJobs(IJobQueue<Action> jobQueue)
+        private void DoManyJobs(DisruptorQueue jobQueue)
         {
+            Action doNothing = () => { };
             for (int i = 0; i < _jobSize - 1; i++)
             {
-                jobQueue.Enqueue(() => { });
+                jobQueue.Enqueue(doNothing);
+            }
+            jobQueue.Enqueue(() => _autoResetEvent.Set());
+            _autoResetEvent.WaitOne();
+        }
+
+        private void DoManyJobs(TPLDataflowQueue jobQueue)
+        {
+            Action doNothing = () => { };
+            for (int i = 0; i < _jobSize - 1; i++)
+            {
+                jobQueue.Enqueue(doNothing);
+            }
+            jobQueue.Enqueue(() => _autoResetEvent.Set());
+            _autoResetEvent.WaitOne();
+        }
+
+        private void DoManyJobs(RxQueue jobQueue)
+        {
+            Action doNothing = () => { };
+            for (int i = 0; i < _jobSize - 1; i++)
+            {
+                jobQueue.Enqueue(doNothing);
+            }
+            jobQueue.Enqueue(() => _autoResetEvent.Set());
+            _autoResetEvent.WaitOne();
+        }
+
+        private void DoManyJobs(NoDedicatedThreadQueue jobQueue)
+        {
+            Action doNothing = () => { };
+            for (int i = 0; i < _jobSize - 1; i++)
+            {
+                jobQueue.Enqueue(doNothing);
+            }
+            jobQueue.Enqueue(() => _autoResetEvent.Set());
+            _autoResetEvent.WaitOne();
+        }
+
+        private void DoManyJobs(BlockingCollectionQueue jobQueue)
+        {
+            Action doNothing = () => { };
+            for (int i = 0; i < _jobSize - 1; i++)
+            {
+                jobQueue.Enqueue(doNothing);
+            }
+            jobQueue.Enqueue(() => _autoResetEvent.Set());
+            _autoResetEvent.WaitOne();
+        }
+
+        private void DoManyJobs(ChannelsQueue jobQueue)
+        {
+            Action doNothing = () => { };
+            for (int i = 0; i < _jobSize - 1; i++)
+            {
+                jobQueue.Enqueue(doNothing);
             }
             jobQueue.Enqueue(() => _autoResetEvent.Set());
             _autoResetEvent.WaitOne();

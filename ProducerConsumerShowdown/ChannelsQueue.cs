@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
@@ -27,6 +28,7 @@ namespace ProducerConsumerShowdown
             });
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Enqueue(Action job) => _writer.TryWrite(job);
 
         public void Stop() => _writer.Complete();

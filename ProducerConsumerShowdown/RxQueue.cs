@@ -2,6 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Runtime.CompilerServices;
 
 namespace ProducerConsumerShowdown
 {
@@ -15,6 +16,7 @@ namespace ProducerConsumerShowdown
                 .Subscribe(job => { job.Invoke(); });
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Enqueue(Action job) => _jobs.OnNext(job);
 
         public void Stop() => _jobs.Dispose();

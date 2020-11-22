@@ -44,3 +44,15 @@
 |                   DisruptorQueue |  45.520 ms | 0.4722 ms | 0.3943 ms |     - |     - |     - |      64 B |
 |         DisruptorQueueNoDelegate |  43.143 ms | 0.8513 ms | 2.0882 ms |     - |     - |     - |         - |
 |  DisruptorQueueNoDelegateBatched |   8.574 ms | 0.1226 ms | 0.1024 ms |     - |     - |     - |         - |
+
+## Job size = 1M, Disruptor batch size = 10, No method calls in test
+|                          Method |       Mean |     Error |     StdDev | Gen 0 | Gen 1 | Gen 2 | Allocated |
+|-------------------------------- |-----------:|----------:|-----------:|------:|------:|------:|----------:|
+|         BlockingCollectionQueue | 261.535 ms | 5.9974 ms | 17.6836 ms |     - |     - |     - |      64 B |
+|          NoDedicatedThreadQueue |  70.767 ms | 1.1073 ms |  0.9246 ms |     - |     - |     - |     269 B |
+|                         RxQueue | 132.344 ms | 2.4868 ms |  2.3262 ms |     - |     - |     - |     380 B |
+|                   ChannelsQueue |  53.065 ms | 1.0590 ms |  1.7399 ms |     - |     - |     - |    3590 B |
+|                TPLDataflowQueue |  57.314 ms | 1.1087 ms |  1.6932 ms |     - |     - |     - |  214032 B |
+|                  DisruptorQueue |  33.467 ms | 1.9658 ms |  5.7963 ms |     - |     - |     - |      64 B |
+|        DisruptorQueueNoDelegate |  30.194 ms | 1.3844 ms |  4.0819 ms |     - |     - |     - |         - |
+| DisruptorQueueNoDelegateBatched |   7.261 ms | 0.1412 ms |  0.2070 ms |     - |     - |     - |         - |

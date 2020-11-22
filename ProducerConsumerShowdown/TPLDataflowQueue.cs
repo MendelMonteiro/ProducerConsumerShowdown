@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks.Dataflow;
 
 namespace ProducerConsumerShowdown
@@ -15,6 +16,7 @@ namespace ProducerConsumerShowdown
             });
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Enqueue(Action job) => _jobs.Post(job);
 
         public void Stop() => _jobs.Complete();
